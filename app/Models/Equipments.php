@@ -9,6 +9,14 @@ class Equipments extends Model
 {
     use HasFactory;
 
+    const REG_MASK = [
+        'N' => '[0-9]',
+        'A' => '[A-Z]',
+        'a' => '[a-z]',
+        'X' => '[A-Z]|[0-9]',
+        'Z' => '[(\-)|(_)|(@)]'
+    ];
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -18,22 +26,14 @@ class Equipments extends Model
 
     public static function isCorrect(string $mask, string $subject)
     {
-        $regMask = [
-            'N' => '[0-9]',
-            'A' => '[A-Z]',
-            'a' => '[a-z]',
-            'X' => '[A-Z]|[0-9]',
-            'Z' => '[(\-)|(_)|(@)]'
-        ];
-
         $reg = "";
         for ($i = 0; $i < strlen($mask); $i++) {
-            if (array_key_exists($mask[$i], $regMask)) {
-                $reg .= $regMask[$mask[$i]];
+            if (array_key_exists($mask[$i], self::REG_MASK)) {
+                $reg .= self::REG_MASK[$mask[$i]];
             }
         }
-        if (!preg_match("/" . $reg . "/", $subject)) {
-            throw new \DomainException('Не соответсвует маске обородувания');
+        if (!preg_match("/" . $reg . "/", $subject) || (strlen($mask) !== strlen($subject))) {
+            throw new \DomainException('Серийный номер не соответсвует маске обородувания');
         }
         return preg_match("/" . $reg . "/", $subject);
     }
