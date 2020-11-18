@@ -9,22 +9,12 @@ use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return Equipments::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $serial = $request['serial_number'];
@@ -39,12 +29,7 @@ class EquipmentController extends Controller
         return Equipments::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         return Equipments::findOrFail($id);
@@ -65,12 +50,7 @@ class EquipmentController extends Controller
         return $equipment;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         Equipments::findOrFail($id)->delete();
