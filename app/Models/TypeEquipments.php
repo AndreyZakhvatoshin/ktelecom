@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TypeEquipment extends Model
+class TypeEquipments extends Model
 {
     use HasFactory;
 
@@ -15,4 +15,10 @@ class TypeEquipment extends Model
         'type_name',
         'mask'
     ];
+
+    public static function getMaskById(int $id)
+    {
+        $field = TypeEquipments::findOrFail($id);
+        return $field['mask'];
+    }
 }

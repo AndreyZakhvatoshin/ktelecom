@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Equipment;
 
 use App\Http\Controllers\Controller;
+use App\Models\Equipments;
+use App\Models\TypeEquipments;
+use Exception;
 use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
@@ -14,17 +17,7 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Equipments::all();
     }
 
     /**
@@ -35,7 +28,16 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $serial = $request['serial_number'];
+        $typeEquipmentsId = $request['type_equipments_id'];
+        $mask = TypeEquipments::getMaskById($typeEquipmentsId);
+        try {
+            Equipments::isCorrect($mask, $serial);
+        } catch (\DomainException $e) {
+            return $e->getMessage();
+        }
+
+        return Equipments::create($request->all());
     }
 
     /**
@@ -46,7 +48,7 @@ class EquipmentController extends Controller
      */
     public function show($id)
     {
-        //
+        return Equipments::findOrFail($id);
     }
 
     /**
@@ -55,11 +57,6 @@ class EquipmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -69,7 +66,17 @@ class EquipmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $equipment = Equipments::findOrFail($id);
+        $serial = $request['serial_number'] ?? $equipment['serial_number'];
+        $typeEquipmentsId = $request['type_equipments_id'] ?? $equipment['type_equipments_id'];
+        $mask = TypeEquipments::getMaskById($typeEquipmentsId);
+        try {
+            Equipments::isCorrect($mask, $serial);
+        } catch (\DomainException $e) {
+            return $e->getMessage();
+        }
+        $equipment->update($request->all());
+        return $equipment;
     }
 
     /**
@@ -80,6 +87,6 @@ class EquipmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Equipments::findOrFail($id)->delete();
     }
 }
