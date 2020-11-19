@@ -24,9 +24,8 @@ class EquipmentsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|confirmed'
+            'type_equipments_id' => 'required|numeric',
+            'serial_number' => 'required|unique:equipments',
         ];
     }
 }
