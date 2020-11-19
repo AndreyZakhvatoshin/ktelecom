@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Equipments extends Model
 {
     use HasFactory;
-
+    /**
+     * Сollection of values TypeEquipment mask
+     */
     const REG_MASK = [
         'N' => '[0-9]',
         'A' => '[A-Z]',
@@ -24,6 +26,13 @@ class Equipments extends Model
         'serial_number',
     ];
 
+    /**
+     * Checks the transmitted serial number
+     * for compliance with the hardware mask
+     * @param string $mask
+     * @param string $subject
+     * @return bool
+     */
     public static function isCorrect(string $mask, string $subject)
     {
         $reg = "";

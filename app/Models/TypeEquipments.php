@@ -16,6 +16,11 @@ class TypeEquipments extends Model
         'mask'
     ];
 
+    /**
+     *Accepts the hardware type id from table TypeEquipments
+     *@param int $id
+     *@return string
+     */
     public static function getMaskById(int $id)
     {
         $field = TypeEquipments::findOrFail($id);
